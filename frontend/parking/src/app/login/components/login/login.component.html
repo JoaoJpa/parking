@@ -1,0 +1,106 @@
+<div class="d-flex flex-column justify-content-center full-height div-login" appLabelsDirective>
+    <div class="d-flex flex-row justify-content-center ">
+        <div class="card col-10 col-xl-4 col-lg-4 col-md-6 col-sm-8 ">
+
+            <div class="d-flex flex-row justify-content-center p-3 mt-4">
+                <img src="assets/icon-logo.png" width="110" height="100">
+            </div>
+            <div class="card-body">
+                <form [formGroup]="formLogin">
+                    <div class="d-flex flex-row justify-content-center">
+                        <legend id="legend-login">Estacione já</legend>
+                    </div>
+                    <div class="d-flex flex-row justify-content-center">
+                        <div class="form-group col-8">
+                            <label class="label-form-group" for="user">
+                                <i class="fa fa-user-circle"></i>
+                                Usuário
+                            </label>
+                            <input type="text" id="user" name="user" class="form-control" formControlName="user">
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row justify-content-center">
+                        <div class="form-group col-8">
+                            <label class="label-form-group" for="password">
+                                <i class="fa fa-lock"></i>
+                                Senha
+                            </label>
+                            <input type="password" id="password" name="password" class="form-control"
+                                formControlName="password">
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-row justify-content-center flex-wrap mt-3 mb-4">
+                        <button class="btn btn-success" (click)="login()">ENTRAR</button>
+                        <h6 class="col-12 p-2" (click)="openModalRegister(contentRegister)">Cadastre-se</h6>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<ng-template #contentRegister let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Cadastre-se, já!</h4>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="formRegister">
+
+            <div class="d-flex flex-row justify-content-center">
+                <div class="form-group col-8">
+                    <label class="label-form-group" for="newName">
+                        <i class="fa fa-user-circle"></i>
+                        Nome do Usuário
+                    </label>
+                    <input type="text" id="newName" name="newName" class="form-control" formControlName="newName">
+                </div>
+            </div>
+
+            <div class="d-flex flex-row justify-content-center">
+                <div class="form-group col-8">
+                    <label class="label-form-group" for="newUser">
+                        <i class="fa fa-user-circle"></i>
+                        User Id
+                    </label>
+                    <input type="text" id="newUser" name="newUser" class="form-control" formControlName="newUser">
+                </div>
+            </div>
+            <div class="d-flex flex-row justify-content-center">
+                <div class="form-group col-8">
+                    <label class="label-form-group" for="newPassword">
+                        <i class="fa fa-lock"></i>
+                        Senha
+                    </label>
+                    <input type="password" id="newPassword" name="newPassword" class="form-control"
+                        formControlName="newPassword">
+                </div>
+            </div>
+
+            <div class="d-flex flex-row justify-content-center">
+                <div class="form-group col-8">
+                    <label class="label-form-group" for="confirmPassword">
+                        <i class="fa fa-lock"></i>
+                        Confirmar Senha
+                    </label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" class="form-control"
+                        formControlName="confirmPassword">
+                </div>
+            </div>
+            <ngb-alert [type]="'danger'" *ngIf="resultLogin && !resultLogin.loginOk">
+                {{!resultLogin.error ? '-' : resultLogin.error}}
+            </ngb-alert>
+
+            <ngb-alert [type]="'success'" *ngIf="resultLogin && resultLogin.loginOk">
+                Cadastro Realizado com Sucesso, você será redirecionado para a tela inical.
+            </ngb-alert>
+        </form>
+       
+    </div>
+    <div class="modal-footer">
+        <button type="button" ngbAutofocus class="btn btn-danger" (click)="modal.close(false)">Cancelar</button>
+        <button type="button" class="btn btn-success" (click)="createNewUser()" [disabled]="!formRegister.valid">Registrar</button>
+    </div>
+</ng-template>

@@ -1,0 +1,68 @@
+$heigth-toolbar: 70px;
+
+body {
+  overflow-x: hidden;
+}
+
+body,
+html {
+  height: 100%;
+  width: 100%;
+  background-color: #a6ffa526 !important;
+  background: #a6ffa526 !important;
+
+  .full-width {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .full-height {
+    height: 100% !important;
+    min-height: 100% !important;
+    max-height: 100% !important;
+  }
+
+  .form-group {
+    margin-bottom: 0px !important;
+    label {
+      font-size: 13px;
+      color: #858585;
+    }
+
+    .label-form-group {
+      position: relative;
+      top: 18px;
+      background: #fff;
+      left: 15px;
+      padding: 0px 10px;
+      z-index: 1;
+    }
+
+    input, select, textarea{
+      height: 48px;
+    }
+  }
+  .toolbar{
+    background: #fff;
+    height: $heigth-toolbar;
+    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.125), 1px 0px 0px 0px rgba(0, 0, 0, 0.125),
+    0px 1px 0px 0 rgba(0, 0, 0, 0.125);
+  }
+
+  .div-router{
+    height: calc(100% - #{$heigth-toolbar});
+  }
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  box-shadow: 0 0 0 30px white inset !important;
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
+.modal-title{
+  color: #0ea421d9;
+}
