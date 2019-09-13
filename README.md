@@ -15,7 +15,7 @@ Esse projeto tem como intuito ser um teste para o Grupo ITSS.
 
 ## Development Front
 
- - npm install 
+ - npm install (pasta 'parking' do projeto front)
  - ng server ou npm start para executar o front em localhost:4200
 
 ## Development Back
