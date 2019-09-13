@@ -1,0 +1,102 @@
+<div class="d-flex flew-row justify-content-start col-12 mb-2">
+    <button class="btn btn-success" (click)="viewListParking(contentListParking)">
+        Listar registros de estacionamento
+        <i class="fa fa-list"></i>
+    </button>
+</div>
+
+<ng-template #contentListParking let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Criar Novo Pátio</h4>
+    </div>
+    <div class="modal-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        Pátio
+                    </th>
+                    <th>
+                        Placa
+                    </th>
+                    <th>
+                        Modelo
+                    </th>
+                    <th>
+                        Cor
+                    </th>
+                    <th>
+                        Valor
+                    </th>
+                    <th>
+                        Duração
+                    </th>
+                    <th>
+                        Datas
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of listParking | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+                    <td>
+                        <div class="d-flex flex-column justify-content-center">
+                            <h6>
+                                {{item.carYard.description}}
+                            </h6>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="d-flex flex-column justify-content-center">
+                            <h6>
+                                 {{formatCarPlace(item.vehicle.carLicensePlace)}}
+                            </h6>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="d-flex flex-column justify-content-center">
+                            <h6>
+                                {{ item.vehicle.model}}
+                            </h6>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="d-flex flex-column justify-content-center">
+                            <h6>
+                                {{item.vehicle.color}}
+                            </h6>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="d-flex flex-column justify-content-center">
+                            <h6>
+                                {{!item.value ? '-' : 'R$ '+ item.value.toFixed(2)}}
+                            </h6>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="d-flex flex-column justify-content-center">
+                            <h6>
+                                {{!item.duration ? '-' : item.duration.toFixed(2) + ' Hora(s)'}}
+                            </h6>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="d-flex flex-column justify-content-center">
+                            <h6>Entrada: <b>{{!item.dateIn ? '-' : item.dateIn}}</b> </h6> 
+                            <h6>Saída: <b>{{!item.dateOut ? '-' : item.dateOut}}</b> </h6>
+                        </div>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="d-flex flew-row justify-content-center">
+                <ngb-pagination [collectionSize]="listParking.length" [(page)]="page"
+                [pageSize]="pageSize" [maxSize]="5" [rotate]="true" [ellipses]="false"
+                [boundaryLinks]="true"></ngb-pagination>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" ngbAutofocus class="btn btn-danger" (click)="modal.close(false)">Cancelar</button>
+    </div>
+</ng-template>

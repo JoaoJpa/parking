@@ -9,4 +9,6 @@ import com.itss.parking.domain.Vehicle;
 @Repository
 public interface VehicleRepository extends PagingAndSortingRepository<Vehicle, Long>, JpaSpecificationExecutor<Vehicle>{
 
+	Vehicle findByCarLicensePlace(String carPlace);
+
 }

@@ -21,7 +21,7 @@ import { AuthGuardLogin } from './core/guard/auth-guard-login';
     NgbModule,
     HttpClientModule,
     CoreModule,
-    NgxWebstorageModule.forRoot()
+    NgxWebstorageModule.forRoot(),
   ],
   providers: [AuthGuardLogin],
   bootstrap: [AppComponent]

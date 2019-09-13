@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { SessionStorageService } from 'ngx-webstorage';
+
+const ROUTER_LOGIN = '/login';
+const SESSION_STORAGE_USER = 'storeUser';
 
 @Component({
   selector: 'app-toolbar',
@@ -7,9 +12,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ToolbarComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router, private storageService: SessionStorageService) { }
 
   ngOnInit() {
   }
 
+  logOut() {
+    this.router.navigate([ROUTER_LOGIN]);
+    this.storageService.clear(SESSION_STORAGE_USER);
+  }
 }

@@ -1,0 +1,51 @@
+<div class="d-flex flew-row justify-content-start col-12 mb-2" >
+    <button class="btn btn-primary" (click)="createNewCarYard(contentNewCarYard)">
+        Novo Pátio
+        <i class="fa fa-car"></i>
+    </button>
+</div>
+
+<ng-template #contentNewCarYard let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Criar Novo Pátio</h4>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="formCarYard">
+            <div class="d-flex flex-row justify-content-center">
+                <div class="form-group col-8">
+                    <label class="label-form-group" for="description">
+                        <i class="fa fa-list-alt"></i> Descrição
+                    </label>
+                    <input type="text" id="description" name="description" class="form-control"
+                        formControlName="description">
+                </div>
+            </div>
+
+            <div class="d-flex flex-row justify-content-center">
+                <div class="form-group col-8">
+                    <label class="label-form-group" for="rate">
+                        <i class="fa fa-money"></i>
+                        Taxa
+                    </label>
+                    <input type="number" step='0.01' id="rate" name="rate" class="form-control" formControlName="rate">
+                </div>
+            </div>
+            <div class="d-flex flex-row justify-content-center">
+                <div class="form-group col-8">
+                    <label class="label-form-group" for="carSpaces">
+                        <i class="fa fa-table"></i> Nº de Vagas
+                    </label>
+                    <input type="number" step="1" id="carSpaces" name="carSpaces" class="form-control"
+                        formControlName="carSpaces">
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" ngbAutofocus class="btn btn-danger" (click)="modal.close(false)">Cancelar</button>
+        <button type="button" class="btn btn-success" (click)="modal.close(true)"
+            [disabled]="!formCarYard.valid">Cadastrar</button>
+    </div>
+</ng-template>

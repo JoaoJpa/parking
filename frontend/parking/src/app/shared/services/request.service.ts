@@ -17,4 +17,8 @@ export class RequestService {
     public postRequest(path: string, params: any) {
         return this.http.post(`${this.apiUrl}${path}`, params);
     }
+
+    public putRequest(path: string, params: any) {
+      return this.http.put(`${this.apiUrl}${path}`, params);
+   }
 }

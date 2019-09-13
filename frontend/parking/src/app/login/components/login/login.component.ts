@@ -61,8 +61,7 @@ export class LoginComponent implements OnInit {
   enterInApplication() {
     this.requestService.postRequest('login', this.formLogin.getRawValue()).subscribe((result: LoginResult) => {
       if (result.loginOk) {
-        this.storageService.store(SESSION_STORAGE_USER, new StorageUser(result.user, result.name));
-        this.router.navigate([ROUTER_INIT]);
+        this.directForInit(result);
       } else {
         this.toastService.error(result.error);
       }
@@ -79,10 +78,15 @@ export class LoginComponent implements OnInit {
       if (this.resultLogin.loginOk) {
         setTimeout(() => {
           this.modalService.dismissAll();
-          this.router.navigate([ROUTER_INIT]);
+          this.directForInit(result);
         }, 3000);
       }
     });
+  }
+
+  directForInit(result: LoginResult) {
+    this.storageService.store(SESSION_STORAGE_USER, new StorageUser(result.user, result.name));
+    this.router.navigate([ROUTER_INIT]);
   }
 
 }

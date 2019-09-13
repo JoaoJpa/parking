@@ -1,39 +1,43 @@
-<div class="d-flex flex-row flex-wrap justify-content-center full-width full-height pt-4 pb-4">
-    <div class="d-flex flew-row justify-content-start col-11 mb-2" style="height: 6%">
-        <button class="btn btn-primary" (click)="createNewCarYard(contentNewCarYard)">
-            Novo Pátio
-            <i class="fa fa-car"></i>
-        </button>
+<div class="d-flex flex-row flex-wrap justify-content-center full-width full-height pt-3 pb-3" *ngIf="viewGrid">
+    <div class="d-flex flex-row flex-wrap justify-content-start div-new col-11 mb-2">
+        <app-new-car-yard></app-new-car-yard>
+        <app-list-parkig></app-list-parkig>
     </div>
-    <div class="card col-11" style="height: 94%">
+    <div class="card col-11">
         <div class="card-body">
             <ngb-tabset>
-                <!-- <ngb-tab *ngFor="let carYard of listCarYard" >
-                    <ng-template ngbTabTitle>{{carYard.description}}</ng-template>
-                     <ng-template ngbTabContent>
-                       {{carYard.description}}
-                    </ng-template>
-                </ngb-tab> -->
                 <ngb-tab *ngFor="let item of listCarYard"
                     title="{{'Pátio ' + item.carYard.description + ' (' + item.carYard.id + ')'}}">
                     <ng-template ngbTabContent>
+                        <div class="d-flex flex-row flex-wrap justify-content-center div-dash mt-2">
+                            <h5  class="mr-2">Vagas Ocupadas: {{qtdOccuped(item)}}</h5> 
+                            <h5 >Vagas Livres: {{qtdNotOccuped(item)}} </h5>
+                        </div>
                         <div class="d-flex flex-row flex-wrap justify-content-center mt-2"
                             style="overflow: auto; max-height: 500px">
-                            <div style="border: thick  groove  #bacc0082; height: 200px;"
-                                [ngStyle]="{'background': !spaces.occupied ? '#c5c5c5f2' : 'green'}"
-                                *ngFor="let spaces of carYardListSpaces(item) | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize"
-                                class="col-3 d-flex flex-row flex-wrap justify-content-center">
+                            <div class="col-3 d-flex flex-row flex-wrap justify-content-center div-spaces-car"
+                                [ngClass]="{'not-occuped': !spaces.occupied , 'occuped': spaces.occupied}" 
+                                *ngFor="let spaces of carYardListSpaces(item) | slice: (page-1) * pageSize : 
+                                        (page-1) * pageSize + pageSize"
+                                (click)="occupedOrFinalizedParking(contentParking, contentPay, spaces, item.carYard)">
 
                                 <div class="d-flex flex-row flex-wrap justify-content-start col-12">
-                                    <h6 style="font-size: 30px; color: #9f9f9f">{{spaces.numberSpace}}</h6>
+                                    <h6
+                                        [ngClass]="{'color-not-occuped': !spaces.occupied , 'color-occuped': spaces.occupied}">
+                                        {{spaces.numberSpace}}</h6>
                                 </div>
                                 <div class="d-flex flex-row flex-wrap justify-content-center col-12">
-                                    <i class="fa fa-ban col-12" style="font-size: 120px; color: #9f9f9f;     text-align: center;
-                                    "></i>
+                                    <i class="fa fa-ban color-not-occuped" *ngIf="!spaces.occupied"></i>
+                                    <i class="fa fa-thumbs-o-up color-occuped" *ngIf="spaces.occupied"></i>
+                                </div>
+
+                                <div class="d-flex flex-row flex-wrap justify-content-center col-12"
+                                    *ngIf="spaces.occupied">
+                                    <h6 style="color: #fff">{{formatCarPlace(spaces.vehicle.carLicensePlace)}}</h6>
                                 </div>
                             </div>
                         </div>
-                        <div class="d-flex flex-row flex-wrap justify-content-center mt-4">
+                        <div class="d-flex flex-row flex-wrap justify-content-center mt-2">
                             <ngb-pagination [collectionSize]="carYardListSpaces(item).length" [(page)]="page"
                                 [pageSize]="pageSize" [maxSize]="5" [rotate]="true" [ellipses]="false"
                                 [boundaryLinks]="true"></ngb-pagination>
@@ -47,47 +51,93 @@
     </div>
 </div>
 
-<ng-template #contentNewCarYard let-modal>
+
+<ng-template #contentParking let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Criar Novo Pátio</h4>
+        <h4 class="modal-title" id="modal-basic-title">Ocupar vaga</h4>
     </div>
     <div class="modal-body">
-        <form [formGroup]="formCarYard">
-            <div class="d-flex flex-row justify-content-center">
+        <form [formGroup]="formVehicle">
+            <div class="d-flex flex-row flex-wrap justify-content-center">
                 <div class="form-group col-8">
-                    <label class="label-form-group" for="description">
-                        <i class="fa fa-list-alt"></i> Descrição
+                    <label class="label-form-group" for="carPlace">
+                        <i class="fa fa-road"></i> Buscar placa
                     </label>
-                    <input type="text" id="description" name="description" class="form-control"
-                        formControlName="description">
-                </div>
-            </div>
+                    <input type="text" id="carPlace" name="carPlace" class="form-control" formControlName="carPlace"
+                        mask="000-SSS">
 
-            <div class="d-flex flex-row justify-content-center">
-                <div class="form-group col-8">
-                    <label class="label-form-group" for="rate">
-                        <i class="fa fa-money"></i>
-                        Taxa
-                    </label>
-                    <input type="number" step='0.01' id="rate" name="rate" class="form-control" formControlName="rate">
                 </div>
-            </div>
-            <div class="d-flex flex-row justify-content-center">
-                <div class="form-group col-8">
-                    <label class="label-form-group" for="carSpaces">
-                        <i class="fa fa-table"></i> Nº de Vagas
-                    </label>
-                    <input type="number" step="1" id="carSpaces" name="carSpaces" class="form-control"
-                        formControlName="carSpaces">
+                <div class="d-flex flex-column justify-content-end">
+                    <button class="btn btn-success mb-1" (click)="searchVihicle()">Pesquisar <i
+                            class="fa fa-search"></i></button>
                 </div>
-            </div>
 
+                <ngb-alert class="col-8 mt-2" [type]="'warning'" *ngIf="notVehicle">
+                    {{notVehicle}}
+                </ngb-alert>
+
+                <div class="form-group col-8" *ngIf="vehicleSelect">
+                    <label class="label-form-group" for="carPlace">
+                        <i class="fa fa-road"></i> Placa
+                    </label>
+                    <input type="text" id="carPlace" name="carPlace" class="form-control" formControlName="carPlace"
+                        mask="000-SSS">
+                </div>
+
+                <div class="form-group col-8" *ngIf="vehicleSelect">
+                    <label class="label-form-group" for="color">
+                        <i class="fa fa-paint-brush"></i> Cor
+                    </label>
+
+                    <select class="form-control" name="color" id="color" formControlName="color">
+                        <option value="null">Selecione uma cor</option>
+                        <option value="'AZUL'">AZUL</option>
+                        <option value="'VERMELHO'">VERMELHO</option>
+                        <option value="'PRATA'">PRATA</option>
+                        <option value="'BRANCO'">BRANCO</option>
+                        <option value="'PRETO'">PRETO</option>
+                    </select>
+                </div>
+
+                <div class="form-group col-8" *ngIf="vehicleSelect">
+                    <label class="label-form-group" for="model">
+                        <i class="fa fa-car"></i> Modelo
+                    </label>
+                    <input type="text" id="model" name="model" class="form-control" formControlName="model">
+                </div>
+
+            </div>
         </form>
-
     </div>
     <div class="modal-footer">
         <button type="button" ngbAutofocus class="btn btn-danger" (click)="modal.close(false)">Cancelar</button>
-        <button type="button" class="btn btn-success" (click)="modal.close(true)"
-            [disabled]="!formCarYard.valid">Registrar</button>
+        <button type="button" class="btn btn-success" (click)="saveParking()"
+            [disabled]="!formVehicle.valid">Salvar</button>
+    </div>
+</ng-template>
+
+
+<ng-template #contentPay let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Finalizar vaga Nº - {{spaceSelect.numberSpace}}</h4>
+    </div>
+    <div class="modal-body">
+        <div class="d-flex flex-row justify-content-center">
+            <div class="d-flex flex-column justify-content-center">
+                <h5>
+                    Placa: <b>{{formatCarPlace(spaceSelect.vehicle.carLicensePlace)}}</b>
+                </h5>
+                <h5>
+                    Duração: <b>{{duration(spaceSelect).toFixed(2) + ' Hora(s)'}}</b>
+                </h5>
+                <h5>
+                    Valor: <b>{{'R$ '+ valuePay(spaceSelect).toFixed(2)}}</b>
+                </h5>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" ngbAutofocus class="btn btn-danger" (click)="modal.close(false)">Cancelar</button>
+        <button type="button" class="btn btn-success" (click)="finalizeParking()">Finalizar</button>
     </div>
 </ng-template>

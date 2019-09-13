@@ -61,7 +61,7 @@ public class Parking {
 	private Double value;
 	
 	@Column(name = "DURATION")
-	private Long duration;
+	private Double duration;
 	
 	@Column(name = "OCCUPIED")
 	private Boolean occupied;

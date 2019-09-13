@@ -89,18 +89,20 @@
                         formControlName="confirmPassword">
                 </div>
             </div>
-            <ngb-alert [type]="'danger'" *ngIf="resultLogin && !resultLogin.loginOk">
-                {{!resultLogin.error ? '-' : resultLogin.error}}
-            </ngb-alert>
-
-            <ngb-alert [type]="'success'" *ngIf="resultLogin && resultLogin.loginOk">
-                Cadastro Realizado com Sucesso, você será redirecionado para a tela inical.
-            </ngb-alert>
         </form>
-       
+
+        <ngb-alert class="mt-2" [type]="'danger'" *ngIf="resultLogin && !resultLogin.loginOk">
+            {{!resultLogin.error ? '-' : resultLogin.error}}
+        </ngb-alert>
+
+        <ngb-alert class="mt-2" [type]="'success'" *ngIf="resultLogin && resultLogin.loginOk">
+            Cadastro Realizado com Sucesso, você será redirecionado para a tela inical.
+        </ngb-alert>
+
     </div>
     <div class="modal-footer">
         <button type="button" ngbAutofocus class="btn btn-danger" (click)="modal.close(false)">Cancelar</button>
-        <button type="button" class="btn btn-success" (click)="createNewUser()" [disabled]="!formRegister.valid">Registrar</button>
+        <button type="button" class="btn btn-success" (click)="createNewUser()"
+            [disabled]="!formRegister.valid">Registrar</button>
     </div>
 </ng-template>

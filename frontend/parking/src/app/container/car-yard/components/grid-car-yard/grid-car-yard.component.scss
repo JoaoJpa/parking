@@ -1,0 +1,56 @@
+$color-icons: #9f9f9f;
+
+.div-spaces-car {
+  border: thick groove #bacc0082;
+  height: 200px;
+  cursor: pointer;
+  outline: none;
+
+  i {
+    font-size: 100px;
+    text-align: center;
+  }
+
+  h6{
+    font-size: 30px;
+  }
+
+}
+
+.not-occuped{
+  background: #c5c5c5f2
+}
+
+.occuped{
+  background: #1fa963f2
+}
+
+.div-new{
+  height: 6%;
+}
+
+.color-occuped{
+  color: green
+}
+
+.color-not-occuped{
+  color: $color-icons;
+}
+
+.div-dash{
+  h5{
+    color: #fff;
+    border-radius: 20px;
+    padding: 10px;
+  }
+  :nth-child(1){
+    background: #1fa963f2;
+  }
+  :nth-child(2){
+    background: #c5c5c5f2;
+  }
+}
+
+.card-body{
+  padding-bottom: 0px;
+}

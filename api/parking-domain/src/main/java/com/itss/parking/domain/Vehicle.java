@@ -33,4 +33,7 @@ public class Vehicle {
 	@Column(name = "CAR_LICENSE_PLACE")
 	private String carLicensePlace;
 	
+	@Column(name = "MODEL")
+	private String model;
+	
 }
