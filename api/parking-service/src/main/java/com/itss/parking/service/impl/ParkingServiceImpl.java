@@ -33,6 +33,7 @@ public class ParkingServiceImpl implements IParkingService {
 		return parkingRepository.save(Parking.builder()
 				.vehicle(registerNewParking.getVehicle())
 				.carYard(registerNewParking.getCarYard())
+				.client(registerNewParking.getClient())
 				.dateIn(new Date())
 				.numberSpace(registerNewParking.getNumberSpace())
 				.occupied(Boolean.TRUE)

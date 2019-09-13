@@ -5,10 +5,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CoreModule } from './core/core.module';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import { AuthGuardLogin } from './core/guard/auth-guard-login';
+import { RequestInterceptor } from './http-interceptor';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,9 @@ import { AuthGuardLogin } from './core/guard/auth-guard-login';
     CoreModule,
     NgxWebstorageModule.forRoot(),
   ],
-  providers: [AuthGuardLogin],
+  providers: [AuthGuardLogin,
+    { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

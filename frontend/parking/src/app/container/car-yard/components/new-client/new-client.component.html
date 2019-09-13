@@ -1,0 +1,51 @@
+<div class="d-flex flew-row justify-content-start col-12 mb-2">
+    <button class="btn btn-primary" (click)="createNewClient(contentNewClient)">
+        Novo Cliente
+        <i class="fa fa-user-plus"></i>
+    </button>
+</div>
+
+<ng-template #contentNewClient let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Criar Novo Cliente</h4>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="formClient">
+            <div class="d-flex flex-row justify-content-center">
+                <div class="form-group col-8">
+                    <label class="label-form-group" for="name">
+                        <i class="fa fa-user-o"></i> Nome *
+                    </label>
+                    <input type="text" id="name" name="name" class="form-control" formControlName="name">
+                </div>
+            </div>
+
+            <div class="d-flex flex-row justify-content-center">
+                <div class="form-group col-8">
+                    <label class="label-form-group" for="cpf">
+                        <i class="fa fa-id-card-o"></i>
+                        CPF *
+                    </label>
+                    <input type="phone" id="cpf" name="cpf" class="form-control" formControlName="cpf"
+                        mask="000.000.000-00">
+                </div>
+            </div>
+            <div class="d-flex flex-row justify-content-center">
+                <div class="form-group col-8">
+                    <label class="label-form-group" for="phone">
+                        <i class="fa fa-phone"></i> Telefone *
+                    </label>
+                    <input type="text" step="1" id="phone" name="phone" class="form-control" formControlName="phone"
+                        mask="(00) 00000-0000">
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" ngbAutofocus class="btn btn-danger" (click)="modal.close(false)">Cancelar</button>
+        <button type="button" class="btn btn-success" (click)="modal.close(true)"
+            [disabled]="!formClient.valid">Cadastrar</button>
+    </div>
+</ng-template>

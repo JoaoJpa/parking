@@ -1,6 +1,7 @@
 <div class="d-flex flex-row flex-wrap justify-content-center full-width full-height pt-3 pb-3" *ngIf="viewGrid">
     <div class="d-flex flex-row flex-wrap justify-content-start div-new col-11 mb-2">
         <app-new-car-yard></app-new-car-yard>
+        <app-new-client></app-new-client>
         <app-list-parkig></app-list-parkig>
     </div>
     <div class="card col-11">
@@ -10,14 +11,13 @@
                     title="{{'Pátio ' + item.carYard.description + ' (' + item.carYard.id + ')'}}">
                     <ng-template ngbTabContent>
                         <div class="d-flex flex-row flex-wrap justify-content-center div-dash mt-2">
-                            <h5  class="mr-2">Vagas Ocupadas: {{qtdOccuped(item)}}</h5> 
-                            <h5 >Vagas Livres: {{qtdNotOccuped(item)}} </h5>
+                            <h5 class="mr-2">Vagas Ocupadas: {{qtdOccuped(item)}}</h5>
+                            <h5>Vagas Livres: {{qtdNotOccuped(item)}} </h5>
                         </div>
                         <div class="d-flex flex-row flex-wrap justify-content-center mt-2"
                             style="overflow: auto; max-height: 500px">
                             <div class="col-3 d-flex flex-row flex-wrap justify-content-center div-spaces-car"
-                                [ngClass]="{'not-occuped': !spaces.occupied , 'occuped': spaces.occupied}" 
-                                *ngFor="let spaces of carYardListSpaces(item) | slice: (page-1) * pageSize : 
+                                [ngClass]="{'not-occuped': !spaces.occupied , 'occuped': spaces.occupied}" *ngFor="let spaces of carYardListSpaces(item) | slice: (page-1) * pageSize : 
                                         (page-1) * pageSize + pageSize"
                                 (click)="occupedOrFinalizedParking(contentParking, contentPay, spaces, item.carYard)">
 
@@ -76,17 +76,17 @@
                     {{notVehicle}}
                 </ngb-alert>
 
-                <div class="form-group col-8" *ngIf="vehicleSelect">
+                <div class="form-group col-8" *ngIf="vehicleSelect || notVehicle">
                     <label class="label-form-group" for="carPlace">
-                        <i class="fa fa-road"></i> Placa
+                        <i class="fa fa-road"></i> Placa *
                     </label>
                     <input type="text" id="carPlace" name="carPlace" class="form-control" formControlName="carPlace"
                         mask="000-SSS">
                 </div>
 
-                <div class="form-group col-8" *ngIf="vehicleSelect">
+                <div class="form-group col-8" *ngIf="vehicleSelect || notVehicle">
                     <label class="label-form-group" for="color">
-                        <i class="fa fa-paint-brush"></i> Cor
+                        <i class="fa fa-paint-brush"></i> Cor *
                     </label>
 
                     <select class="form-control" name="color" id="color" formControlName="color">
@@ -99,11 +99,22 @@
                     </select>
                 </div>
 
-                <div class="form-group col-8" *ngIf="vehicleSelect">
+                <div class="form-group col-8" *ngIf="vehicleSelect || notVehicle">
                     <label class="label-form-group" for="model">
-                        <i class="fa fa-car"></i> Modelo
+                        <i class="fa fa-car"></i> Modelo *
                     </label>
                     <input type="text" id="model" name="model" class="form-control" formControlName="model">
+                </div>
+
+                <div class="form-group col-8" *ngIf="vehicleSelect || notVehicle">
+                    <label class="label-form-group" for="client">
+                        <i class="fa fa-user-o"></i> Cliente
+                    </label>
+
+                    <select class="form-control" name="client" id="client" formControlName="client">
+                        <option value="null">Cliente não informado</option>
+                        <option *ngFor="let client of listClient" [ngValue]="client">{{client.name}}</option>
+                    </select>
                 </div>
 
             </div>

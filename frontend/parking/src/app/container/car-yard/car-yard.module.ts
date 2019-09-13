@@ -9,10 +9,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NewCarYardComponent } from './components/new-car-yard/new-car-yard.component';
 import { NgxMaskModule } from 'ngx-mask';
 import { ListParkigComponent } from './components/list-parkig/list-parkig.component';
+import { NewClientComponent } from './components/new-client/new-client.component';
 
 
 @NgModule({
-  declarations: [GridCarYardComponent, NewCarYardComponent, ListParkigComponent],
+  declarations: [GridCarYardComponent, NewCarYardComponent, ListParkigComponent, NewClientComponent],
   imports: [
     CommonModule,
     CarYardRoutingModule,

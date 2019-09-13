@@ -1,6 +1,7 @@
 package com.itss.parking.domain.request;
 
 import com.itss.parking.domain.CarYard;
+import com.itss.parking.domain.Client;
 import com.itss.parking.domain.Vehicle;
 
 import lombok.Builder;
@@ -13,5 +14,6 @@ import lombok.Setter;
 public class CreateParkingRequest {
 	private Vehicle vehicle;
 	private CarYard carYard;
+	private Client client;
 	private Long numberSpace;
 }

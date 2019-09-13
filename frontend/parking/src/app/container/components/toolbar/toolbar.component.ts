@@ -12,9 +12,14 @@ const SESSION_STORAGE_USER = 'storeUser';
 })
 export class ToolbarComponent implements OnInit {
 
+  userId: string;
+  userName: string;
+
   constructor(private router: Router, private storageService: SessionStorageService) { }
 
   ngOnInit() {
+    this.userName = this.storageService.retrieve(SESSION_STORAGE_USER).userName;
+    this.userId = this.storageService.retrieve(SESSION_STORAGE_USER).userId;
   }
 
   logOut() {

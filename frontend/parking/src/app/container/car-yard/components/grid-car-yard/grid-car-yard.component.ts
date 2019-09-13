@@ -9,6 +9,7 @@ import { Vehicle } from '../../models/Vehicle';
 import { ToastSystemService } from 'src/app/core/services/toast-system.service';
 import { CarYard } from '../../models/CarYard';
 import * as moment from 'moment';
+import { Client } from '../../models/Client';
 
 @Component({
   selector: 'app-grid-car-yard',
@@ -26,6 +27,7 @@ export class GridCarYardComponent implements OnInit {
   carYardSelect: CarYard;
   spaceSelect: Parking;
   vehicleSelect: Vehicle;
+  listClient: Array<Client> = [];
 
   constructor(private requestService: RequestService, private modalService: NgbModal, private toastService: ToastSystemService) { }
 
@@ -34,6 +36,7 @@ export class GridCarYardComponent implements OnInit {
       carPlace: new FormControl(null, [Validators.required]),
       color: new FormControl(null, [Validators.required]),
       model: new FormControl(null, [Validators.required]),
+      client: new FormControl(null)
     });
 
     this.initGrid();
@@ -59,29 +62,46 @@ export class GridCarYardComponent implements OnInit {
 
   occupedOrFinalizedParking(contentParking, contentPay, space: Parking, carYard: CarYard) {
     this.formVehicle.reset();
+    this.initForm();
     this.carYardSelect = carYard;
     this.spaceSelect = space;
     if (space && !space.occupied) {
       this.modalService.open(contentParking, { centered: true });
+      this.requestService.getRequest('client').subscribe((result: Array<Client>) => {
+        this.listClient = result;
+      });
     } else {
       this.modalService.open(contentPay, { centered: true });
     }
   }
 
+  initForm() {
+    this.vehicleSelect = null;
+    this.notVehicle = null;
+  }
+
   searchVihicle() {
     const carPlace = this.formVehicle.controls.carPlace.value;
     if (carPlace && carPlace.length === 6) {
-      this.requestService.getRequest('vehicle/one', { carPlace } ).subscribe((vehicle: Vehicle) => {
+      this.requestService.getRequest('vehicle/one', { carPlace }).subscribe((vehicle: Vehicle) => {
         if (vehicle) {
           this.setFormVehicle(vehicle);
           this.notVehicle = null;
           this.vehicleSelect = vehicle;
         } else {
+          this.resetForm();
           this.notVehicle = 'Veiculo não encontrado, preencha os dados do veículo para ocupar a vaga';
           this.vehicleSelect = null;
         }
       });
     }
+  }
+
+  resetForm() {
+    this.formVehicle.controls.carPlace.setValue(null);
+    this.formVehicle.controls.color.setValue(null);
+    this.formVehicle.controls.model.setValue(null);
+    this.formVehicle.controls.client.setValue(null);
   }
 
   setFormVehicle(vehicle: Vehicle) {
@@ -91,25 +111,54 @@ export class GridCarYardComponent implements OnInit {
   }
 
   saveParking() {
+    this.modalService.dismissAll();
     if (this.notVehicle) {
-      this.requestService.postRequest('vehicle', this.formVehicle.getRawValue()).subscribe((vehicleResult: Vehicle) => {
-        if (vehicleResult) {
-         this.requestSaveParking(vehicleResult);
+      const carPlace = this.formVehicle.controls.carPlace.value;
+      this.requestService.getRequest('vehicle/one', { carPlace }).subscribe((vehicle: Vehicle) => {
+        if (vehicle) {
+          const color: string = this.formVehicle.controls.color.value;
+          const model: string = this.formVehicle.controls.model.value;
+          this.updateVehicle(new Vehicle(vehicle.id, color, vehicle.carLicensePlace, model));
         } else {
-          this.errorModal('Erro ao cadastra veiculo');
+          this.createVehicle();
         }
-      }, () => {
-        this.errorModal('Erro ao cadastra veiculo');
       });
     } else {
       this.requestSaveParking(this.vehicleSelect);
     }
   }
 
-  requestSaveParking(vehicleResult: Vehicle) {
+  updateVehicle(vehicle: Vehicle) {
+    this.requestService.putRequest('vehicle', {
+      id: vehicle.id, carLicensePlace: vehicle.carLicensePlace, model: vehicle.model, color: vehicle.color
+    }).subscribe((vehicleResult: Vehicle) => {
+      if (vehicleResult) {
+        this.requestSaveParking(vehicleResult);
+      } else {
+        this.errorModal('Erro ao cadastra veiculo');
+      }
+    }, () => {
+      this.errorModal('Erro ao cadastra veiculo');
+    });
+  }
+
+  createVehicle() {
+    this.requestService.postRequest('vehicle', this.formVehicle.getRawValue()).subscribe((vehicleResult: Vehicle) => {
+      if (vehicleResult) {
+        this.requestSaveParking(vehicleResult);
+      } else {
+        this.errorModal('Erro ao cadastra veiculo');
+      }
+    }, () => {
+      this.errorModal('Erro ao cadastra veiculo');
+    });
+  }
+
+  requestSaveParking(vehicleRequest: Vehicle) {
     this.requestService.postRequest('parking', {
-      vehicle: vehicleResult,
+      vehicle: vehicleRequest,
       carYard: this.carYardSelect,
+      client: this.formVehicle.controls.client.value,
       numberSpace: this.spaceSelect.numberSpace
     }).subscribe((parking: Parking) => {
       if (parking) {

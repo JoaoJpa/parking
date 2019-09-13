@@ -29,6 +29,9 @@
                         Valor
                     </th>
                     <th>
+                        Cliente
+                    </th>
+                    <th>
                         Duração
                     </th>
                     <th>
@@ -48,7 +51,7 @@
                     <td>
                         <div class="d-flex flex-column justify-content-center">
                             <h6>
-                                 {{formatCarPlace(item.vehicle.carLicensePlace)}}
+                                {{formatCarPlace(item.vehicle.carLicensePlace)}}
                             </h6>
                         </div>
                     </td>
@@ -76,13 +79,20 @@
                     <td>
                         <div class="d-flex flex-column justify-content-center">
                             <h6>
+                                {{!item.client ? '-' : item.client.name}}
+                            </h6>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="d-flex flex-column justify-content-center">
+                            <h6>
                                 {{!item.duration ? '-' : item.duration.toFixed(2) + ' Hora(s)'}}
                             </h6>
                         </div>
                     </td>
                     <td>
                         <div class="d-flex flex-column justify-content-center">
-                            <h6>Entrada: <b>{{!item.dateIn ? '-' : item.dateIn}}</b> </h6> 
+                            <h6>Entrada: <b>{{!item.dateIn ? '-' : item.dateIn}}</b> </h6>
                             <h6>Saída: <b>{{!item.dateOut ? '-' : item.dateOut}}</b> </h6>
                         </div>
 
@@ -91,9 +101,8 @@
             </tbody>
         </table>
         <div class="d-flex flew-row justify-content-center">
-                <ngb-pagination [collectionSize]="listParking.length" [(page)]="page"
-                [pageSize]="pageSize" [maxSize]="5" [rotate]="true" [ellipses]="false"
-                [boundaryLinks]="true"></ngb-pagination>
+            <ngb-pagination [collectionSize]="listParking.length" [(page)]="page" [pageSize]="pageSize" [maxSize]="5"
+                [rotate]="true" [ellipses]="false" [boundaryLinks]="true"></ngb-pagination>
         </div>
     </div>
     <div class="modal-footer">
