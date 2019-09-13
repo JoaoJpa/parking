@@ -4,12 +4,12 @@ Esse projeto tem como intuito ser um teste para o Grupo ITSS.
 
 #Tecnologias
 
-Java
-Spring 2.2.0 SNAPSHOT
-Angular 8
-Ngb Boostrap (https://ng-bootstrap.github.io/#/home)
-Node 10.15.1 
-Maven 3.6.0
+- Java
+- Spring 2.2.0 SNAPSHOT
+- Angular 8
+- Ngb Boostrap (https://ng-bootstrap.github.io/#/home)
+- Node 10.15.1 
+- Maven 3.6.0
 
 ## Development Front
 
